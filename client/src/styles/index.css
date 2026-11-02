@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-surface-50 text-gray-800 font-sans;
+  }
+}
+
+/* Custom smooth transitions */
+button, input, select, textarea {
+  transition: all 0.15s ease-in-out;
+}
