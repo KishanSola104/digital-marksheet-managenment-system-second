@@ -23,6 +23,12 @@ import ManageUsers from '../pages/admin/ManageUsers';
 import MyProfile from '../pages/common/MyProfile';
 import ChangePassword from '../pages/common/ChangePassword';
 
+// Task 3 Administrative Setup Modules
+import AcademicYearManagement from '../pages/admin/AcademicYearManagement';
+import ClassManagement from '../pages/admin/ClassManagement';
+import SectionManagement from '../pages/admin/SectionManagement';
+import SubjectManagement from '../pages/admin/SubjectManagement';
+
 // Role-based Dashboard Redirector for generic /dashboard path
 function RoleDashboardRedirect() {
   const { user } = useAuth();
@@ -102,6 +108,46 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['ADMIN']}>
             <ManageUsers />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Task 3: Academic Year Management */}
+      <Route
+        path="/admin/academic-years"
+        element={
+          <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['ADMIN']}>
+            <AcademicYearManagement />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Task 3: Class Management */}
+      <Route
+        path="/admin/classes"
+        element={
+          <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['ADMIN']}>
+            <ClassManagement />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Task 3: Section Management */}
+      <Route
+        path="/admin/sections"
+        element={
+          <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['ADMIN']}>
+            <SectionManagement />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Task 3: Subject Management */}
+      <Route
+        path="/admin/subjects"
+        element={
+          <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['ADMIN']}>
+            <SubjectManagement />
           </ProtectedRoute>
         }
       />

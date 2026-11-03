@@ -13,7 +13,9 @@ export default function Sidebar({ isOpen, onClose }) {
 
   // State for expandable accordions
   const [isAdminSetupOpen, setIsAdminSetupOpen] = useState(true);
-  const [isClassesSubmenuOpen, setIsClassesSubmenuOpen] = useState(false);
+  const [isClassesSubmenuOpen, setIsClassesSubmenuOpen] = useState(
+    location.pathname.startsWith('/admin/classes') || location.pathname.startsWith('/admin/sections')
+  );
   const [isSettingsOpen, setIsSettingsOpen] = useState(
     location.pathname === '/profile' || location.pathname === '/change-password'
   );
@@ -106,20 +108,20 @@ export default function Sidebar({ isOpen, onClose }) {
                     </span>
                   </NavLink>
 
-                  {/* Manage Academic Year (Future) */}
-                  <div className="flex items-center justify-between px-3 py-2 rounded-md text-xs text-gray-500 cursor-not-allowed">
+                  {/* Manage Academic Year */}
+                  <NavLink to="/admin/academic-years" className={sublinkClass} onClick={onClose}>
                     <span>Manage Academic Year</span>
-                    <span className="text-[10px] bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">
-                      Future
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold">
+                      Active
                     </span>
-                  </div>
+                  </NavLink>
 
-                  {/* Manage Classes with Submenu (Future) */}
+                  {/* Manage Classes with Submenu */}
                   <div>
                     <button
                       type="button"
                       onClick={() => setIsClassesSubmenuOpen(!isClassesSubmenuOpen)}
-                      className="w-full flex items-center justify-between px-3 py-2 rounded-md text-xs text-gray-400 hover:text-gray-300"
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-md text-xs font-medium text-gray-300 hover:bg-navy-800 hover:text-white transition"
                     >
                       <span>Manage Classes</span>
                       <svg
@@ -133,30 +135,30 @@ export default function Sidebar({ isOpen, onClose }) {
                     </button>
 
                     {isClassesSubmenuOpen && (
-                      <div className="pl-4 py-1 space-y-1">
-                        <div className="flex items-center justify-between px-3 py-1.5 text-xs text-gray-500 cursor-not-allowed">
-                          <span>Manage Classes</span>
-                          <span className="text-[9px] bg-gray-800 text-gray-400 px-1 py-0.5 rounded">
-                            Future
+                      <div className="pl-3 py-1 space-y-1">
+                        <NavLink to="/admin/classes" className={sublinkClass} onClick={onClose}>
+                          <span>Classes List</span>
+                          <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold">
+                            Active
                           </span>
-                        </div>
-                        <div className="flex items-center justify-between px-3 py-1.5 text-xs text-gray-500 cursor-not-allowed">
+                        </NavLink>
+                        <NavLink to="/admin/sections" className={sublinkClass} onClick={onClose}>
                           <span>Manage Sections</span>
-                          <span className="text-[9px] bg-gray-800 text-gray-400 px-1 py-0.5 rounded">
-                            Future
+                          <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold">
+                            Active
                           </span>
-                        </div>
+                        </NavLink>
                       </div>
                     )}
                   </div>
 
-                  {/* Manage Subjects (Future) */}
-                  <div className="flex items-center justify-between px-3 py-2 rounded-md text-xs text-gray-500 cursor-not-allowed">
+                  {/* Manage Subjects */}
+                  <NavLink to="/admin/subjects" className={sublinkClass} onClick={onClose}>
                     <span>Manage Subjects</span>
-                    <span className="text-[10px] bg-gray-800 text-gray-400 px-1.5 py-0.5 rounded">
-                      Future
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold">
+                      Active
                     </span>
-                  </div>
+                  </NavLink>
                 </div>
               )}
             </div>

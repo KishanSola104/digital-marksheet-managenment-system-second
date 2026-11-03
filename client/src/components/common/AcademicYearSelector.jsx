@@ -32,7 +32,7 @@ export default function AcademicYearSelector() {
           {isLoading ? (
             <span className="text-gray-400">Loading...</span>
           ) : selectedYear ? (
-            <span className="text-white font-semibold">{selectedYear.yearName}</span>
+            <span className="text-white font-semibold">{selectedYear.academicYearName || selectedYear.yearName}</span>
           ) : (
             <span className="text-gray-300">No Year Selected</span>
           )}
@@ -84,7 +84,7 @@ export default function AcademicYearSelector() {
                       ) : (
                         <div className="w-4 h-4 flex-shrink-0" />
                       )}
-                      <span className="truncate">{year.yearName}</span>
+                      <span className="truncate">{year.academicYearName || year.yearName}</span>
                     </div>
 
                     <div className="flex items-center space-x-1 flex-shrink-0">
