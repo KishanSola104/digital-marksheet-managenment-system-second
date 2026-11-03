@@ -111,6 +111,23 @@ async function verifyUserToken(req, res, next) {
       });
     }
 
+    // Verify associated school exists and is active
+    const school = await School.findOne({ schoolId: decoded.schoolId });
+    if (!school) {
+      return res.status(404).json({
+        success: false,
+        message: 'Associated school record not found.'
+      });
+    }
+
+    if (!school.isActive) {
+      return res.status(403).json({
+        success: false,
+        message: 'This school account is currently inactive. Contact system administrator.'
+      });
+    }
+
+    req.school = school;
     req.user = user;
     req.userRole = decoded.role;
     req.schoolId = decoded.schoolId;

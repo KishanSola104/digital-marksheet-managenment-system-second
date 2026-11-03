@@ -74,12 +74,15 @@ class UserAuthService {
       role: selectedRole.trim().toUpperCase()
     });
 
+    const schoolDoc = await School.findOne({ schoolId: user.schoolId });
+
     return {
       userId: user.userId,
       name: user.name,
       email: user.email,
       role: selectedRole.trim().toUpperCase(),
       schoolId: user.schoolId,
+      schoolName: schoolDoc ? schoolDoc.schoolName : '',
       mustChangePassword: user.mustChangePassword,
       token
     };
@@ -221,6 +224,12 @@ class UserAuthService {
       throw err;
     }
 
+    if (currentPassword === newPassword) {
+      const err = new Error('New password must not be identical to the current password.');
+      err.statusCode = 400;
+      throw err;
+    }
+
     const user = await User.findOne({
       userId: userId.toUpperCase(),
       schoolId: schoolId.toUpperCase()
@@ -235,6 +244,13 @@ class UserAuthService {
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
       const err = new Error('Current password does not match.');
+      err.statusCode = 400;
+      throw err;
+    }
+
+    const isSameAsCurrent = await bcrypt.compare(newPassword, user.password);
+    if (isSameAsCurrent) {
+      const err = new Error('New password must not be identical to the current password.');
       err.statusCode = 400;
       throw err;
     }

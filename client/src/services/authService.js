@@ -70,6 +70,11 @@ const authService = {
   async changeUserPassword(currentPassword, newPassword) {
     const res = await api.post('/auth/user-change-password', { currentPassword, newPassword });
     return res.data;
+  },
+
+  async changePassword(currentPassword, newPassword) {
+    const res = await api.post('/auth/change-password', { currentPassword, newPassword });
+    return res.data;
   }
 };
 

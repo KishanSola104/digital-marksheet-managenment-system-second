@@ -30,5 +30,6 @@ router.get('/user-session', verifyUserToken, userAuthController.getUserSession);
 router.post('/user-forgot-password', userAuthController.forgotPassword);
 router.post('/user-reset-password', userAuthController.resetPassword);
 router.post('/user-change-password', verifyUserToken, userAuthController.changePassword);
+router.post('/change-password', verifyUserToken, userAuthController.changePassword);
 
 module.exports = router;

@@ -49,7 +49,7 @@ export default function Header() {
           {user ? (
             <div className="flex items-center space-x-3">
               <Link
-                to="/admin/dashboard"
+                to="/dashboard"
                 className="text-xs sm:text-sm font-medium bg-brand-600 hover:bg-brand-700 text-white px-3 py-2 rounded-md transition"
               >
                 Dashboard

@@ -5,6 +5,12 @@ const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const seedRoles = require('./config/seedRoles');
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const roleRoutes = require('./routes/roleRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const academicYearRoutes = require('./routes/academicYearRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
@@ -22,7 +28,7 @@ app.use(
   cors({
     origin: CLIENT_URL,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
@@ -42,6 +48,12 @@ app.get('/api/health', (req, res) => {
 
 // API Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/roles', roleRoutes);
+app.use('/api/profile', profileRoutes);
+app.use('/api/academic-years', academicYearRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Catch-all 404 handler for undefined API routes
 app.use('/api/*', (req, res) => {

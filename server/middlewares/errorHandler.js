@@ -38,7 +38,7 @@ function errorHandler(err, req, res, next) {
   }
 
   const statusCode = err.statusCode || 500;
-  const message = err.isOperational ? err.message : 'An unexpected server error occurred. Please try again.';
+  const message = (err.isOperational || err.statusCode) ? err.message : 'An unexpected server error occurred. Please try again.';
 
   return res.status(statusCode).json({
     success: false,

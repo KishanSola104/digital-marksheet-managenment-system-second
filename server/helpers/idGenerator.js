@@ -90,8 +90,52 @@ async function generateAdminUserId(schoolId, adminName) {
   return candidateId;
 }
 
+/**
+ * Generates a unique Staff User ID based on role:
+ * ADMIN -> ADM-<SCHOOL_PREFIX>-<4_DIGIT_NUMBER>
+ * HEAD_TEACHER -> HT-<SCHOOL_PREFIX>-<4_DIGIT_NUMBER>
+ * TEACHER -> TEA-<SCHOOL_PREFIX>-<4_DIGIT_NUMBER>
+ * OFFICE_STAFF -> STF-<SCHOOL_PREFIX>-<4_DIGIT_NUMBER>
+ */
+async function generateStaffUserId(schoolId, role) {
+  const parts = schoolId.split('-');
+  const schoolPrefix = parts.length >= 2 ? parts[1] : 'SCH';
+
+  const rolePrefixMap = {
+    ADMIN: 'ADM',
+    HEAD_TEACHER: 'HDT',
+    TEACHER: 'TCH',
+    OFFICE_STAFF: 'OFS'
+  };
+
+  const rolePrefix = rolePrefixMap[role.toUpperCase()] || 'USR';
+
+  let counter = 1;
+  let candidateId = '';
+  let exists = true;
+
+  const existingCount = await User.countDocuments({
+    userId: new RegExp(`^${rolePrefix}-${schoolPrefix}-`, 'i')
+  });
+  counter = existingCount + 1;
+
+  while (exists) {
+    const formattedNumber = String(counter).padStart(4, '0');
+    candidateId = `${rolePrefix}-${schoolPrefix}-${formattedNumber}`;
+    const found = await User.findOne({ userId: candidateId });
+    if (!found) {
+      exists = false;
+    } else {
+      counter++;
+    }
+  }
+
+  return candidateId;
+}
+
 module.exports = {
   extractPrefix,
   generateSchoolId,
-  generateAdminUserId
+  generateAdminUserId,
+  generateStaffUserId
 };

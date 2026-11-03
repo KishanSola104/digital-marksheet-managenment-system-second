@@ -27,6 +27,7 @@ class UserAuthController {
           email: result.email,
           role: result.role,
           schoolId: result.schoolId,
+          schoolName: result.schoolName,
           mustChangePassword: result.mustChangePassword,
           token: result.token
         }

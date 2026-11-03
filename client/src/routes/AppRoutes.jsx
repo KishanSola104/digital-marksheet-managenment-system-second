@@ -1,7 +1,9 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
+import { useAuth } from '../context/AuthContext';
 
+// Phase 1 Public & Auth Pages
 import HomePage from '../pages/HomePage';
 import SchoolRegisterPage from '../pages/SchoolRegisterPage';
 import SchoolLoginPage from '../pages/SchoolLoginPage';
@@ -9,20 +11,27 @@ import UserLoginPage from '../pages/UserLoginPage';
 import ChangePasswordPage from '../pages/ChangePasswordPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
 import ResetPasswordPage from '../pages/ResetPasswordPage';
-import AdminDashboardPage from '../pages/AdminDashboardPage';
 
-// Simple placeholder view for future role dashboards
-function FutureDashboardPlaceholder({ roleName }) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-50 p-4">
-      <div className="bg-white p-8 rounded-xl shadow-md border border-gray-200 max-w-md text-center">
-        <h2 className="text-xl font-bold text-navy-900">{roleName} Portal</h2>
-        <p className="text-xs text-gray-500 mt-2">
-          This role dashboard is prepared and will be implemented in subsequent phases.
-        </p>
-      </div>
-    </div>
-  );
+// Phase 2 Role Dashboards
+import AdminDashboard from '../pages/admin/AdminDashboard';
+import HeadTeacherDashboard from '../pages/headTeacher/HeadTeacherDashboard';
+import TeacherDashboard from '../pages/teacher/TeacherDashboard';
+import OfficeStaffDashboard from '../pages/officeStaff/OfficeStaffDashboard';
+
+// Phase 2 Modules & Common Pages
+import ManageUsers from '../pages/admin/ManageUsers';
+import MyProfile from '../pages/common/MyProfile';
+import ChangePassword from '../pages/common/ChangePassword';
+
+// Role-based Dashboard Redirector for generic /dashboard path
+function RoleDashboardRedirect() {
+  const { user } = useAuth();
+  const role = user?.role || 'ADMIN';
+
+  if (role === 'HEAD_TEACHER') return <Navigate to="/head-teacher/dashboard" replace />;
+  if (role === 'TEACHER') return <Navigate to="/teacher/dashboard" replace />;
+  if (role === 'OFFICE_STAFF') return <Navigate to="/office-staff/dashboard" replace />;
+  return <Navigate to="/admin/dashboard" replace />;
 }
 
 export default function AppRoutes() {
@@ -57,7 +66,7 @@ export default function AppRoutes() {
         }
       />
 
-      {/* Forced User Password Change */}
+      {/* Forced User Password Change on First Login */}
       <Route
         path="/user-change-password"
         element={
@@ -67,38 +76,82 @@ export default function AppRoutes() {
         }
       />
 
+      {/* Generic /dashboard redirect */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute requireSchool={true} requireUser={true}>
+            <RoleDashboardRedirect />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Admin Dashboard */}
       <Route
         path="/admin/dashboard"
         element={
           <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['ADMIN']}>
-            <AdminDashboardPage />
+            <AdminDashboard />
           </ProtectedRoute>
         }
       />
 
-      {/* Future Role Dashboards */}
+      {/* Admin Manage Users */}
+      <Route
+        path="/admin/users"
+        element={
+          <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['ADMIN']}>
+            <ManageUsers />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Head Teacher Dashboard */}
       <Route
         path="/head-teacher/dashboard"
         element={
           <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['HEAD_TEACHER']}>
-            <FutureDashboardPlaceholder roleName="Head Teacher" />
+            <HeadTeacherDashboard />
           </ProtectedRoute>
         }
       />
+
+      {/* Teacher Dashboard */}
       <Route
         path="/teacher/dashboard"
         element={
           <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['TEACHER']}>
-            <FutureDashboardPlaceholder roleName="Teacher" />
+            <TeacherDashboard />
           </ProtectedRoute>
         }
       />
+
+      {/* Office Staff Dashboard */}
       <Route
         path="/office-staff/dashboard"
         element={
           <ProtectedRoute requireSchool={true} requireUser={true} allowedRoles={['OFFICE_STAFF']}>
-            <FutureDashboardPlaceholder roleName="Office Staff" />
+            <OfficeStaffDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Common My Profile (All Roles) */}
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute requireSchool={true} requireUser={true}>
+            <MyProfile />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Common Change Password (All Roles) */}
+      <Route
+        path="/change-password"
+        element={
+          <ProtectedRoute requireSchool={true} requireUser={true}>
+            <ChangePassword />
           </ProtectedRoute>
         }
       />
